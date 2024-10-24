@@ -2,9 +2,6 @@ class Matrix:
     
     def __init__(self, rows, columns, values):
 
-        #if len(values) != rows * columns:
-            #raise ValueError('Кількість значень не відповідає розміру матриці')
-
         self.rows = rows
         self.columns = columns
         self.matrix = [values[i*columns:(i+1)*columns] for i in range(rows)]
@@ -32,6 +29,9 @@ class Matrix:
                 
 
     def multiplication(self, matrix_2):
+
+        if self.columns != matrix_2.rows:
+            raise ValueError('Кількість стовпців першої матриці не дорівнює кількості рядків другої')
 
         result_matrix = [[0 for _ in range(matrix_2.columns)] for _ in range(self.rows)]
 
