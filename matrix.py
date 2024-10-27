@@ -47,7 +47,8 @@ class Matrix:
         n = self.rows
         P = list(range(n))
         
-        for k in range(n):
+        for k in range(n): # крок 2
+            # крок 3
             max_index = k
             max_value = abs(self.matrix[k][k])
             for i in range(k + 1, n):
