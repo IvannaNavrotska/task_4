@@ -49,7 +49,6 @@ class Matrix:
         n = self.rows
         P = list(range(n))
         
-        # Кроки LUP-розкладу
         for k in range(n):
             max_index = k
             max_value = abs(self.matrix[k][k])
