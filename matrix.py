@@ -42,16 +42,14 @@ class Matrix:
 
         self.matrix = result_matrix
 
-
     def LUP_decomposition(self):
-        
         if self.rows != self.columns:
             raise ValueError('Матриця має бути квадратною для LUP-розкладу')
 
         n = self.rows
         P = list(range(n))
         
-        #крок 2 і 3
+        # Кроки LUP-розкладу
         for k in range(n):
             max_index = k
             max_value = abs(self.matrix[k][k])
@@ -60,22 +58,23 @@ class Matrix:
                     max_value = abs(self.matrix[i][k])
                     max_index = i
                     
-            # крок 4
+            # Крок 4
             if self.matrix[max_index][k] == 0: 
                 raise ValueError('Матриця є виродженою, розклад неможливий')
         
-            # кроки 5 та 6
+            # Кроки 5 та 6
             if max_index != k: 
                 self.matrix[k], self.matrix[max_index] = self.matrix[max_index], self.matrix[k]
                 P[k], P[max_index] = P[max_index], P[k]
                 
-            # крок 7
+            # Крок 7
             for i in range(k + 1, n):
-                self.matrix[i][k] /= self.matrix[k][k] # крок 8
+                self.matrix[i][k] /= self.matrix[k][k]  # Крок 8
                 
-                # кроки 9 та 10
+                # Кроки 9 та 10
                 for j in range(k + 1, n):
                     self.matrix[i][j] -= self.matrix[i][k] * self.matrix[k][j]
+        
         
         L = [[0] * n for _ in range(n)]
         U = [[0] * n for _ in range(n)]
@@ -90,6 +89,7 @@ class Matrix:
                     L[i][j] = self.matrix[i][j]  
 
         return P, L, U
+
 
     def triangular_sys_solver(self, b):
             
@@ -108,7 +108,7 @@ class Matrix:
 
         # Ux = y
         x = [0] * n
-        for k in range(n - 1, -1, -1):
+        for k in range(self.rows - 1, -1, -1):
             x[k] = y[k]
             for j in range(k + 1, n):
                 x[k] -= U[k][j] * x[j]
@@ -117,10 +117,9 @@ class Matrix:
         return x
 
 
-A = Matrix(4, 4, [2, -1, 3, 2, 3, 3, 3, 2, 3, -1, -1, -2, 3, -1, 3, -1])
-b = Matrix(4,1, [4, 6, 6, 6])
+A = Matrix(6, 6, [1, 1, -2, 1, 3, -1, 2, -1, 1, 2, 1, -3, 1, 3, -3, -1, 2, 1, 5, 2, -1, -1, 2, 1, -3, -1, 2, 3, 1, 3, 4, 3, 1, -6, -3, -2])
+b = Matrix(6,1, [4, 20, -15, -3, 16, -27])
 
 
 solution = A.triangular_sys_solver(b)
 print(solution)
-
