@@ -43,8 +43,54 @@ class Matrix:
         self.matrix = result_matrix
 
 
-M = Matrix(1, 2, [2, 3, 1, 4])
-M2 = Matrix(1, 2, [5, 1, 0, 3])
-print(M2.matrix)
-M.addition(M2)
-print(M.matrix)
+    def LUP_decomposition(self):
+        
+        if self.rows != self.columns:
+            raise ValueError('Матриця має бути квадратною для LUP-розкладу')
+
+        n = self.rows
+        P = list(range(n))
+        
+        #крок 2 і 3
+        for k in range(n):
+            max_index = k
+            max_value = abs(self.matrix[k][k])
+            for i in range(k + 1, n):
+                if abs(self.matrix[i][k]) > max_value:
+                    max_value = abs(self.matrix[i][k])
+                    max_index = i
+                    
+            # крок 4
+            if self.matrix[max_index][k] == 0: 
+                raise ValueError('Матриця є виродженою, розклад неможливий')
+        
+            # кроки 5 та 6
+            if max_index != k: 
+                self.matrix[k], self.matrix[max_index] = self.matrix[max_index], self.matrix[k]
+                P[k], P[max_index] = P[max_index], P[k]
+                
+            # крок 7
+            for i in range(k + 1, n):
+                self.matrix[i][k] /= self.matrix[k][k] # крок 8
+                
+                # кроки 9 та 10
+                for j in range(k + 1, n):
+                    self.matrix[i][j] -= self.matrix[i][k] * self.matrix[k][j]
+        
+        return P
+
+
+
+
+
+
+M = Matrix(4, 4, [-1, 2, 3, 8, 1, 7, 3, -4, -1, 1, 4, -1 ,2, -4, -1, 6])
+for row in M.matrix:
+    print(row)
+
+P = M.LUP_decomposition()
+for row in M.matrix:
+    print(row)
+
+print(P)
+
