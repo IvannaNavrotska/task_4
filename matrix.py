@@ -107,7 +107,7 @@ class Matrix:
 
         # Ux = y
         x = [0] * n
-        for k in range(self.rows - 1, -1, -1):
+        for k in range(n - 1, -1, -1):
             x[k] = y[k]
             for j in range(k + 1, n):
                 x[k] -= U[k][j] * x[j]
