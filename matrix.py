@@ -77,7 +77,19 @@ class Matrix:
                 for j in range(k + 1, n):
                     self.matrix[i][j] -= self.matrix[i][k] * self.matrix[k][j]
         
-        return P
+        L = [[0] * n for _ in range(n)]
+        U = [[0] * n for _ in range(n)]
+        
+        for i in range(n):
+            for j in range(n):
+                if i == j:
+                    L[i][j] = 1  
+                if i <= j:
+                    U[i][j] = self.matrix[i][j]  
+                else:
+                    L[i][j] = self.matrix[i][j]  
+
+        return P, L, U
 
 
 
