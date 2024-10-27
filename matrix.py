@@ -43,8 +43,6 @@ class Matrix:
         self.matrix = result_matrix
 
     def LUP_decomposition(self):
-        if self.rows != self.columns:
-            raise ValueError('Матриця має бути квадратною для LUP-розкладу')
 
         n = self.rows
         P = list(range(n))
