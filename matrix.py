@@ -91,18 +91,36 @@ class Matrix:
 
         return P, L, U
 
+    def triangular_sys_solver(self, b):
+            
+        P, L, U = self.LUP_decomposition()
+        
+        n = self.rows
+        
+        P_b = [b.matrix[P[i]][0] for i in range(n)]
+
+        # Ly = b'
+        y = [0] * n
+        for k in range(n):
+            y[k] = P_b[k]
+            for j in range(k):
+                y[k] -= L[k][j] * y[j]
+
+        # Ux = y
+        x = [0] * n
+        for k in range(self.rows - 1, -1, -1):
+            x[k] = y[k]
+            for j in range(k + 1, n):
+                x[k] -= U[k][j] * x[j]
+            x[k] /= U[k][k]
+
+        return x
 
 
+A = Matrix(4, 4, [2, -1, 3, 2, 3, 3, 3, 2, 3, -1, -1, -2, 3, -1, 3, -1])
+b = Matrix(4,1, [4, 6, 6, 6])
 
 
-
-M = Matrix(4, 4, [-1, 2, 3, 8, 1, 7, 3, -4, -1, 1, 4, -1 ,2, -4, -1, 6])
-for row in M.matrix:
-    print(row)
-
-P = M.LUP_decomposition()
-for row in M.matrix:
-    print(row)
-
-print(P)
+solution = A.triangular_sys_solver(b)
+print(solution)
 
